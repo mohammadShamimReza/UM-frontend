@@ -1,6 +1,6 @@
 "use client";
-import { USER_ROLE } from "@/constants/role";
 import { sidebarItems } from "@/constants/sidebaritems";
+import { getUserInfo } from "@/services/auth.service";
 
 import { Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
@@ -9,7 +9,8 @@ import { useState } from "react";
 function SideBar() {
   const [collapsed, setCollapsed] = useState(false);
 
-  const role = USER_ROLE.SUPER_ADMIN;
+  const { role } = getUserInfo();
+  console.log(role);
 
   return (
     <Sider
@@ -35,7 +36,7 @@ function SideBar() {
           marginBottom: "1rem",
         }}
       >
-        PH-University
+        UMS
       </div>
       <Menu
         theme="dark"

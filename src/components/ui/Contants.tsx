@@ -1,8 +1,9 @@
 "use client";
 import { Layout, theme } from "antd";
+import Header from "./Header";
 import UMBreadCrumb from "./UMBreadCrumb";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Footer, Sider } = Layout;
 
 function Contants({ children }: { children: React.ReactNode }) {
   const {
@@ -12,7 +13,8 @@ function Contants({ children }: { children: React.ReactNode }) {
   const base = "admin";
 
   return (
-    <Content style={{ margin: "0 16px", minHeight: "100vh", color: "black" }}>
+    <Content style={{ minHeight: "100vh", color: "black" }}>
+      <Header />
       <UMBreadCrumb
         items={[
           { label: `${base}`, link: `/${base}` },

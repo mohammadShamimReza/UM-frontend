@@ -1,8 +1,11 @@
 "use client";
 import Form from "@/components/ui/Forms/Form";
 import FormInput from "@/components/ui/Forms/FormInput";
+import { useUserLoginMutation } from "@/redux/api/authApi";
+import { storeUserInfo } from "@/services/auth.service";
 import { Button, Col, Row } from "antd";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { SubmitHandler } from "react-hook-form";
 import loginImage from "../../assets/Privacy policy-rafiki.svg";
 
@@ -12,11 +15,21 @@ type FormValues = {
 };
 
 function LoginPage() {
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const [userLogin] = useUserLoginMutation();
+  const router = useRouter();
+
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      console.log(data);
+      const res = await userLogin({ ...data }).unwrap();
+      console.log(res);
+
+      if (res?.accessToken) {
+        router.push("/profile");
+      }
+
+      storeUserInfo({ accessToken: res?.accessToken });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   return (

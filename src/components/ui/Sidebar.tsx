@@ -1,16 +1,20 @@
 "use client";
-import { sidebarItems } from "@/constants/sidebaritems";
+
+import { useState } from "react";
+import { Layout, Menu } from "antd";
+
+import { sidebarItems } from "@/constants/sidebarItems";
+import { USER_ROLE } from "@/constants/role";
 import { getUserInfo } from "@/services/auth.service";
 
-import { Menu } from "antd";
-import Sider from "antd/es/layout/Sider";
-import { useState } from "react";
+const { Sider } = Layout;
 
-function SideBar() {
+const SideBar = () => {
   const [collapsed, setCollapsed] = useState(false);
 
-  const { role } = getUserInfo();
-  console.log(role);
+  // const role = USER_ROLE.ADMIN;
+  const { role } = getUserInfo() as any;
+  // console.log(role);
 
   return (
     <Sider
@@ -22,9 +26,9 @@ function SideBar() {
         overflow: "auto",
         height: "100vh",
         position: "sticky",
-        left: "0",
-        top: "0",
-        bottom: "0",
+        left: 0,
+        top: 0,
+        bottom: 0,
       }}
     >
       <div
@@ -33,7 +37,8 @@ function SideBar() {
           fontSize: "2rem",
           textAlign: "center",
           fontWeight: "bold",
-          marginBottom: "1rem",
+          marginBottom: ".5rem",
+          padding: "10px 0px",
         }}
       >
         UMS
@@ -46,6 +51,6 @@ function SideBar() {
       />
     </Sider>
   );
-}
+};
 
 export default SideBar;

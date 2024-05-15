@@ -10,12 +10,10 @@ const CreateDepartmentPage = () => {
   const [addDepartment] = useAddDepartmentMutation();
 
   const onSubmit = async (data: any) => {
-    message.loading("Creating ........");
+    message.loading("Creating.....");
     try {
       console.log(data);
-      const result = await addDepartment(data);
-      console.log(result, "resutl");
-
+      await addDepartment(data);
       message.success("Department added successfully");
     } catch (err: any) {
       console.error(err.message);

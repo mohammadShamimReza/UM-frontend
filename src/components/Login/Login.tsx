@@ -1,31 +1,35 @@
 "use client";
-import { Button, Col, Input, Row, message } from "antd";
-import loginImage from "../../assets/login-image.png";
-import Image from "next/image";
 import Form from "@/components/Forms/Form";
 import FormInput from "@/components/Forms/FormInput";
-import { SubmitHandler } from "react-hook-form";
 import { useUserLoginMutation } from "@/redux/api/authApi";
-import { storeUserInfo } from "@/services/auth.service";
-import { useRouter } from "next/navigation";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "@/schemas/login";
+import { storeUserInfo } from "@/services/auth.service";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Button, Col, Row, message } from "antd";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { SubmitHandler } from "react-hook-form";
+import loginImage from "../../assets/login-image.png";
+import { idText } from "typescript";
+import Loading from "@/app/loading";
 
 type FormValues = {
-  id: string;
+  email: string;
   password: string;
 };
 
 const LoginPage = () => {
-  const [userLogin] = useUserLoginMutation();
+  const [userLogin,{isLoading}] = useUserLoginMutation();
   const router = useRouter();
 
   // console.log(isLoggedIn());
 
   const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
+    console.log(data, "his");
     try {
+      console.log(data);
       const res = await userLogin({ ...data }).unwrap();
-      // console.log(res);
+      console.log(res);
       if (res?.accessToken) {
         router.push("/profile");
         message.success("User logged in successfully!");
@@ -36,6 +40,12 @@ const LoginPage = () => {
       console.error(err.message);
     }
   };
+
+  if (isLoading) {
+    return (
+      <Loading />
+    )
+  }
 
   return (
     <Row
@@ -60,10 +70,10 @@ const LoginPage = () => {
           <Form submitHandler={onSubmit} resolver={yupResolver(loginSchema)}>
             <div>
               <FormInput
-                name="id"
-                type="text"
+                name="email"
+                type="email"
                 size="large"
-                label="User Id"
+                label="email"
                 required
               />
             </div>
@@ -80,7 +90,7 @@ const LoginPage = () => {
                 required
               />
             </div>
-            <Button type="primary" htmlType="submit">
+            <Button onClick={() => onSubmit} type="primary" htmlType="submit">
               Login
             </Button>
           </Form>

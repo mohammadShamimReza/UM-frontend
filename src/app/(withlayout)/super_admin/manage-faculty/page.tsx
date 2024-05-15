@@ -1,22 +1,36 @@
 "use client";
 import ActionBar from "@/components/ui/ActionBar";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
-import { Button, Input } from "antd";
-import Link from "next/link";
+import UMTable from "@/components/ui/UMTable";
+import { useFacultiesQuery } from "@/redux/api/facultyApi";
+import { useDebounced } from "@/redux/hooks";
+import { IDepartment } from "@/types";
 import {
   DeleteOutlined,
   EditOutlined,
-  ReloadOutlined,
   EyeOutlined,
+  ReloadOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
-import { useDebounced } from "@/redux/hooks";
-import UMTable from "@/components/ui/UMTable";
-import { IDepartment } from "@/types";
+import { Button, Input } from "antd";
 import dayjs from "dayjs";
-import { useFacultiesQuery } from "@/redux/api/facultyApi";
+import Link from "next/link";
+import { useState } from "react";
 
 const FacultyPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   const query: Record<string, any> = {};
 
   const [page, setPage] = useState<number>(1);
@@ -90,25 +104,8 @@ const FacultyPage = () => {
       render: function (data: any) {
         return (
           <>
-            <Link href={`/super_admin/manage-faculty/details/${data}`}>
-              <Button onClick={() => console.log(data)} type="primary">
-                <EyeOutlined />
-              </Button>
-            </Link>
-            <Link href={`/super_admin/manage-faculty/edit/${data}`}>
-              <Button
-                style={{
-                  margin: "0px 5px",
-                }}
-                onClick={() => console.log(data)}
-                type="primary"
-              >
-                <EditOutlined />
-              </Button>
-            </Link>
-            <Button onClick={() => console.log(data)} type="primary" danger>
-              <DeleteOutlined />
-            </Button>
+            
+         
           </>
         );
       },
@@ -136,8 +133,8 @@ const FacultyPage = () => {
       <UMBreadCrumb
         items={[
           {
-            label: "super_admin",
-            link: "/super_admin",
+            label: "admin",
+            link: "/admin",
           },
         ]}
       />
@@ -151,7 +148,7 @@ const FacultyPage = () => {
           }}
         />
         <div>
-          <Link href="/super_admin/manage-faculty/create">
+          <Link href="/admin/manage-faculty/create">
             <Button type="primary">Create</Button>
           </Link>
           {(!!sortBy || !!sortOrder || !!searchTerm) && (

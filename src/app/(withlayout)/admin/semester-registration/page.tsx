@@ -119,16 +119,7 @@ const SemesterRegistrationPage = () => {
       render: function (data: any) {
         return (
           <>
-            <Link href={`/admin/semester-registration/edit/${data?.id}`}>
-              <Button
-                style={{
-                  margin: "0px 5px",
-                }}
-                type="primary"
-              >
-                <EditOutlined />
-              </Button>
-            </Link>
+          
             {data?.status === "ENDED" && (
               <Tooltip title="Start Semester" placement="bottom">
                 <Button
@@ -142,13 +133,7 @@ const SemesterRegistrationPage = () => {
                 </Button>
               </Tooltip>
             )}
-            <Button
-              onClick={() => deleteHandler(data?.id)}
-              type="primary"
-              danger
-            >
-              <DeleteOutlined />
-            </Button>
+          
           </>
         );
       },

@@ -1,17 +1,11 @@
 "use client";
+import { genderOptions } from "@/constants/global";
 import { Col, Row } from "antd";
-import FormInput from "../Forms/FormInput";
-import FormSelectField from "../Forms/FormSelectField";
-import UploadImage from "../ui/UploadImage";
-import {
-  acDepartmentOptions,
-  acSemesterOptions,
-  facultyOptions,
-  genderOptions,
-} from "@/constants/global";
 import ACDepartmentField from "../Forms/ACDepartmentField";
 import ACFacultyField from "../Forms/ACFacultyField";
 import ACSemesterField from "../Forms/ACSemesterField";
+import FormInput from "../Forms/FormInput";
+import FormSelectField from "../Forms/FormSelectField";
 
 const StudentInfo = () => {
   return (
@@ -34,9 +28,10 @@ const StudentInfo = () => {
         >
           <FormInput
             type="text"
-            name="student.name.firstName"
+            name="student.firstName"
             size="large"
             label="First Name"
+            required={true}
           />
         </Col>
         <Col
@@ -48,9 +43,10 @@ const StudentInfo = () => {
         >
           <FormInput
             type="text"
-            name="student.name.middleName"
+            name="student.middleName"
             size="large"
             label="Middle Name"
+            required={true}
           />
         </Col>
         <Col
@@ -62,9 +58,10 @@ const StudentInfo = () => {
         >
           <FormInput
             type="text"
-            name="student.name.lastName"
+            name="student.lastName"
             size="large"
             label="Last Name"
+            required={true}
           />
         </Col>
         <Col
@@ -76,9 +73,10 @@ const StudentInfo = () => {
         >
           <FormInput
             type="password"
-            name="password"
+            name="student.password"
             size="large"
             label="Password"
+            required={true}
           />
         </Col>
         <Col
@@ -89,7 +87,7 @@ const StudentInfo = () => {
           }}
         >
           <ACDepartmentField
-            name="student.academicDepartment"
+            name="student.academicDepartmentId"
             label="Academic Department"
           />
         </Col>
@@ -101,7 +99,7 @@ const StudentInfo = () => {
           }}
         >
           <ACFacultyField
-            name="student.academicFaculty"
+            name="student.academicFacultyId"
             label="Academic Faculty"
           />
         </Col>
@@ -113,7 +111,7 @@ const StudentInfo = () => {
           }}
         >
           <ACSemesterField
-            name="student.academicSemester"
+            name="student.academicSemesterId"
             label="Academic Semester"
           />
         </Col>
@@ -139,7 +137,7 @@ const StudentInfo = () => {
             marginBottom: "10px",
           }}
         >
-          <UploadImage name="file" />
+          {/* <UploadImage name="file" /> */}
         </Col>
       </Row>
     </div>

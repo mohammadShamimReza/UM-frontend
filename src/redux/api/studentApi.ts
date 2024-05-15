@@ -1,6 +1,6 @@
 import { IMeta, IMyCourse, IStudent } from "@/types";
-import { baseApi } from "./baseApi";
 import { tagTypes } from "../tag-types";
+import { baseApi } from "./baseApi";
 
 const STUDENT_URL = "/students";
 export const studentApi = baseApi.injectEndpoints({
@@ -36,7 +36,7 @@ export const studentApi = baseApi.injectEndpoints({
         url: "/users/create-student",
         method: "POST",
         data,
-        contentType: "multipart/form-data",
+        contentType: "application/json",
       }),
       invalidatesTags: [tagTypes.student],
     }),

@@ -1,21 +1,14 @@
 "use client";
 import ActionBar from "@/components/ui/ActionBar";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
-import { Button, Input } from "antd";
-import Link from "next/link";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  ReloadOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
-import { useState } from "react";
-import { useDebounced } from "@/redux/hooks";
 import UMTable from "@/components/ui/UMTable";
-import { IDepartment } from "@/types";
-import dayjs from "dayjs";
-import { useFacultiesQuery } from "@/redux/api/facultyApi";
 import { useStudentsQuery } from "@/redux/api/studentApi";
+import { useDebounced } from "@/redux/hooks";
+import { ReloadOutlined } from "@ant-design/icons";
+import { Button, Input } from "antd";
+import dayjs from "dayjs";
+import Link from "next/link";
+import { useState } from "react";
 
 const StudentPage = () => {
   const query: Record<string, any> = {};
@@ -83,29 +76,7 @@ const StudentPage = () => {
       title: "Action",
       dataIndex: "id",
       render: function (data: any) {
-        return (
-          <>
-            <Link href={`/super_admin/manage-faculty/details/${data.id}`}>
-              <Button onClick={() => console.log(data)} type="primary">
-                <EyeOutlined />
-              </Button>
-            </Link>
-            <Link href={`/super_admin/manage-faculty/edit/${data.id}`}>
-              <Button
-                style={{
-                  margin: "0px 5px",
-                }}
-                onClick={() => console.log(data)}
-                type="primary"
-              >
-                <EditOutlined />
-              </Button>
-            </Link>
-            <Button onClick={() => console.log(data)} type="primary" danger>
-              <DeleteOutlined />
-            </Button>
-          </>
-        );
+        return <></>;
       },
     },
   ];
@@ -131,8 +102,8 @@ const StudentPage = () => {
       <UMBreadCrumb
         items={[
           {
-            label: "super_admin",
-            link: "/super_admin",
+            label: "admin",
+            link: "/admin",
           },
         ]}
       />
@@ -146,7 +117,7 @@ const StudentPage = () => {
           }}
         />
         <div>
-          <Link href="/super_admin/manage-student/create">
+          <Link href="/admin/manage-student/create">
             <Button type="primary">Create</Button>
           </Link>
           {(!!sortBy || !!sortOrder || !!searchTerm) && (

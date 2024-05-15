@@ -78,24 +78,7 @@ const ACFacultyPage = () => {
       render: function (data: any) {
         return (
           <>
-            <Link href={`/admin/academic/faculty/edit/${data?.id}`}>
-              <Button
-                style={{
-                  margin: "0px 5px",
-                }}
-                onClick={() => console.log(data)}
-                type="primary"
-              >
-                <EditOutlined />
-              </Button>
-            </Link>
-            <Button
-              onClick={() => deleteHandler(data?.id)}
-              type="primary"
-              danger
-            >
-              <DeleteOutlined />
-            </Button>
+        
           </>
         );
       },

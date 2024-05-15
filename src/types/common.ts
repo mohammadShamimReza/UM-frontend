@@ -36,7 +36,9 @@ export interface Name {
 
 export interface IAdmin {
   id: string;
-  name: Name;
+  firstName: string;
+  lastName: string;
+  middleName: string;
   gender: string;
   managementDepartment: string;
   email: string;

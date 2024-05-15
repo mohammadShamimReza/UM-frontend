@@ -63,9 +63,9 @@ const StepperForm = ({
 
   const handleStudentOnSubmit = (data: any) => {
     submitHandler(data);
-    reset();
-    setToLocalStorage("step", JSON.stringify({ step: 0 }));
-    setToLocalStorage(persistKey, JSON.stringify({}));
+    // reset();
+    // setToLocalStorage("step", JSON.stringify({ step: 0 }));
+    // setToLocalStorage(persistKey, JSON.stringify({}));
     navigateLink && router.push(navigateLink);
   };
 

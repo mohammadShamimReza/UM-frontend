@@ -1,22 +1,21 @@
 "use client";
 import ActionBar from "@/components/ui/ActionBar";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
-import { Button, Input, message } from "antd";
-import Link from "next/link";
+import UMModal from "@/components/ui/UMModal";
+import UMTable from "@/components/ui/UMTable";
+import { useAdminsQuery, useDeleteAdminMutation } from "@/redux/api/adminApi";
+import { useDebounced } from "@/redux/hooks";
+import { IDepartment } from "@/types";
 import {
   DeleteOutlined,
   EditOutlined,
-  FilterOutlined,
-  ReloadOutlined,
   EyeOutlined,
+  ReloadOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
-import { useDebounced } from "@/redux/hooks";
-import UMTable from "@/components/ui/UMTable";
-import { useAdminsQuery, useDeleteAdminMutation } from "@/redux/api/adminApi";
-import { IDepartment } from "@/types";
+import { Button, Input, message } from "antd";
 import dayjs from "dayjs";
-import UMModal from "@/components/ui/UMModal";
+import Link from "next/link";
+import { useState } from "react";
 
 const AdminPage = () => {
   const query: Record<string, any> = {};
@@ -47,7 +46,7 @@ const AdminPage = () => {
 
   const admins = data?.admins;
   const meta = data?.meta;
-
+  console.log(admins);
   const columns = [
     {
       title: "Id",
@@ -58,7 +57,7 @@ const AdminPage = () => {
       title: "Name",
       dataIndex: "name",
       render: function (data: Record<string, string>) {
-        const fullName = `${data?.firstName} ${data?.middleName} ${data?.lastName}`;
+        const fullName = `${admins[0]?.firstName} ${admins[0]?.middleName} ${admins[0]?.lastName}`;
         return <>{fullName}</>;
       },
     },
@@ -96,33 +95,8 @@ const AdminPage = () => {
         // console.log(data);
         return (
           <>
-            <Link href={`/super_admin/admin/details/${data}`}>
-              <Button onClick={() => console.log(data)} type="primary">
-                <EyeOutlined />
-              </Button>
-            </Link>
-            <Link href={`/super_admin/admin/edit/${data}`}>
-              <Button
-                style={{
-                  margin: "0px 5px",
-                }}
-                onClick={() => console.log(data)}
-                type="primary"
-              >
-                <EditOutlined />
-              </Button>
-            </Link>
-            <Button
-              type="primary"
-              onClick={() => {
-                setOpen(true);
-                setAdminId(data);
-              }}
-              danger
-              style={{ marginLeft: "3px" }}
-            >
-              <DeleteOutlined />
-            </Button>
+            
+           
           </>
         );
       },

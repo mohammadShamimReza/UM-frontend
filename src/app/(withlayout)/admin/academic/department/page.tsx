@@ -1,22 +1,18 @@
 "use client";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  ReloadOutlined,
-} from "@ant-design/icons";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import UMTable from "@/components/ui/UMTable";
+import { ReloadOutlined } from "@ant-design/icons";
 
-import { Button, Input, message } from "antd";
-import Link from "next/link";
-import { useState } from "react";
 import ActionBar from "@/components/ui/ActionBar";
-import { useDebounced } from "@/redux/hooks";
-import dayjs from "dayjs";
 import {
   useAcademicDepartmentsQuery,
   useDeleteAcademicDepartmentMutation,
 } from "@/redux/api/academic/departmentApi";
+import { useDebounced } from "@/redux/hooks";
+import { Button, Input, message } from "antd";
+import dayjs from "dayjs";
+import Link from "next/link";
+import { useState } from "react";
 
 const ACDepartmentPage = () => {
   const query: Record<string, any> = {};
@@ -84,28 +80,7 @@ const ACDepartmentPage = () => {
     {
       title: "Action",
       render: function (data: any) {
-        return (
-          <>
-            <Link href={`/admin/academic/department/edit/${data?.id}`}>
-              <Button
-                style={{
-                  margin: "0px 5px",
-                }}
-                onClick={() => console.log(data)}
-                type="primary"
-              >
-                <EditOutlined />
-              </Button>
-            </Link>
-            <Button
-              onClick={() => deleteHandler(data?.id)}
-              type="primary"
-              danger
-            >
-              <DeleteOutlined />
-            </Button>
-          </>
-        );
+        return <></>;
       },
     },
   ];

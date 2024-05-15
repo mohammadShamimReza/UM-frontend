@@ -1,6 +1,6 @@
 import { ICoreFaculty, IFaculty, IFacultyCourse, IMeta } from "@/types";
-import { baseApi } from "./baseApi";
 import { tagTypes } from "../tag-types";
+import { baseApi } from "./baseApi";
 
 const BASE_FACULTY_API_URL = "/faculties";
 
@@ -37,7 +37,7 @@ export const facultyApi = baseApi.injectEndpoints({
         url: "/users/create-faculty",
         method: "POST",
         data,
-        contentType: "multipart/form-data",
+        contentType: "application/json",
       }),
       invalidatesTags: [tagTypes.faculty],
     }),
@@ -46,7 +46,8 @@ export const facultyApi = baseApi.injectEndpoints({
       query: (data) => ({
         url: `${BASE_FACULTY_API_URL}/${data.id}`,
         method: "PATCH",
-        data: data.body,
+        data: data,
+        contentType: "application/json",
       }),
       invalidatesTags: [tagTypes.faculty],
     }),

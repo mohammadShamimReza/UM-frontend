@@ -6,9 +6,7 @@ import Form from "@/components/Forms/Form";
 import FormDatePicker from "@/components/Forms/FormDatePicker";
 import FormInput from "@/components/Forms/FormInput";
 import FormSelectField from "@/components/Forms/FormSelectField";
-import FormTextArea from "@/components/Forms/FormTextArea";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
-import UploadImage from "@/components/ui/UploadImage";
 import { bloodGroupOptions, genderOptions } from "@/constants/global";
 import { useAddFacultyWithFormDataMutation } from "@/redux/api/facultyApi";
 import { Button, Col, Row, message } from "antd";
@@ -17,16 +15,18 @@ const CreateFacultyPage = () => {
   const [addFacultyWithFormData] = useAddFacultyWithFormDataMutation();
 
   const adminOnSubmit = async (values: any) => {
-    const obj = { ...values };
-    const file = obj["file"];
-    delete obj["file"];
-    const data = JSON.stringify(obj);
-    const formData = new FormData();
-    formData.append("file", file as Blob);
-    formData.append("data", data);
-    message.loading("Creating...");
+    // console.log(values);
+    // const obj = { ...values };
+    // const file = obj["file"];
+    // delete obj["file"];
+    // const data = JSON.stringify(obj);
+    // const formData = new FormData();
+    // formData.append("file", file as Blob);
+    // formData.append("data", data);
+    // message.loading("Creating...");
+    values.faculty.profileImage = "http://localhost:800";
     try {
-      const res = await addFacultyWithFormData(formData);
+      const res = await addFacultyWithFormData(values);
       if (!!res) {
         message.success("Faculty created successfully!");
       }
@@ -35,7 +35,7 @@ const CreateFacultyPage = () => {
     }
   };
 
-  const base = "super_admin";
+  const base = "admin";
   return (
     <>
       <UMBreadCrumb
@@ -61,34 +61,38 @@ const CreateFacultyPage = () => {
           <Row gutter={{ xs: 24, xl: 8, lg: 8, md: 24 }}>
             <Col span={6} style={{ margin: "10px 0" }}>
               <FormInput
-                name="faculty.name.firstName"
+                name="faculty.firstName"
                 label="First name"
                 size="large"
+                required={true}
               />
             </Col>
 
             <Col span={6} style={{ margin: "10px 0" }}>
               <FormInput
-                name="faculty.name.middleName"
+                name="faculty.middleName"
                 label="Middle name"
                 size="large"
+                required={true}
               />
             </Col>
 
             <Col span={6} style={{ margin: "10px 0" }}>
               <FormInput
-                name="faculty.name.lastName"
+                name="faculty.lastName"
                 label="Last name"
                 size="large"
+                required={true}
               />
             </Col>
 
             <Col span={6} style={{ margin: "10px 0" }}>
               <FormInput
                 type="password"
-                name="password"
+                name="faculty.password"
                 label="Password"
                 size="large"
+                required={true}
               />
             </Col>
 
@@ -102,22 +106,23 @@ const CreateFacultyPage = () => {
 
             <Col span={8} style={{ margin: "10px 0" }}>
               <ACFacultyField
-                name="faculty.academicFaculty"
+                name="faculty.academicFacultyId"
                 label="Academic Faculty"
               />
             </Col>
             <Col span={8} style={{ margin: "10px 0" }}>
               <ACDepartmentField
-                name="faculty.academicDepartment"
+                name="faculty.academicDepartmentId"
                 label="Academic Department"
               />
             </Col>
-
+            {/* 
             <Col span={8} style={{ margin: "10px 0" }}>
               <UploadImage name="file" />
-            </Col>
+            </Col> */}
           </Row>
         </div>
+        <br />
         {/* basic information  */}
         <div
           style={{
@@ -137,6 +142,7 @@ const CreateFacultyPage = () => {
                 name="faculty.email"
                 label="Email address"
                 size="large"
+                required={true}
               />
             </Col>
 
@@ -145,6 +151,7 @@ const CreateFacultyPage = () => {
                 name="faculty.contactNo"
                 label="Contact no."
                 size="large"
+                required={true}
               />
             </Col>
 
@@ -153,6 +160,7 @@ const CreateFacultyPage = () => {
                 name="faculty.emergencyContactNo"
                 label="Emergency contact no."
                 size="large"
+                required={true}
               />
             </Col>
 
@@ -176,22 +184,7 @@ const CreateFacultyPage = () => {
                 name="faculty.designation"
                 label="Designation"
                 size="large"
-              />
-            </Col>
-
-            <Col span={12} style={{ margin: "10px 0" }}>
-              <FormTextArea
-                name="faculty.presentAddress"
-                label="Present address"
-                rows={4}
-              />
-            </Col>
-
-            <Col span={12} style={{ margin: "10px 0" }}>
-              <FormTextArea
-                name="faculty.permanentAddress"
-                label="Permanent address"
-                rows={4}
+                required={true}
               />
             </Col>
           </Row>

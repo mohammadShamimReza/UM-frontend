@@ -77,24 +77,7 @@ const ManageDepartmentPage = () => {
       render: function (data: any) {
         return (
           <>
-            <Link href={`/super_admin/department/edit/${data?.id}`}>
-              <Button
-                style={{
-                  margin: "0px 5px",
-                }}
-                onClick={() => console.log(data)}
-                type="primary"
-              >
-                <EditOutlined />
-              </Button>
-            </Link>
-            <Button
-              onClick={() => deleteHandler(data?.id)}
-              type="primary"
-              danger
-            >
-              <DeleteOutlined />
-            </Button>
+         
           </>
         );
       },

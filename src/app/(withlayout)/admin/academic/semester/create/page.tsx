@@ -39,6 +39,7 @@ const CreateACSemesterPage = () => {
     message.loading("Creating.....");
     try {
       const res = addAcademicSemester(data);
+      console.log(res, data)
       if (!!res) {
         message.success("Academic Semester Created successfully");
       }

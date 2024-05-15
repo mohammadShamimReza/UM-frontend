@@ -4,15 +4,11 @@ import Form from "@/components/Forms/Form";
 import FormDatePicker from "@/components/Forms/FormDatePicker";
 import FormInput from "@/components/Forms/FormInput";
 import FormSelectField from "@/components/Forms/FormSelectField";
-import FormTextArea from "@/components/Forms/FormTextArea";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
-import UploadImage from "@/components/ui/UploadImage";
 import { bloodGroupOptions, genderOptions } from "@/constants/global";
 import { useAddAdminWithFormDataMutation } from "@/redux/api/adminApi";
 import { useDepartmentsQuery } from "@/redux/api/departmentApi";
-import { adminSchema } from "@/schemas/admin";
 import { IDepartment } from "@/types";
-import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Button, Col, Row, message } from "antd";
 
@@ -32,16 +28,18 @@ const CreateAdminPage = () => {
     });
 
   const onSubmit = async (values: any) => {
-    const obj = { ...values };
-    const file = obj["file"];
-    delete obj["file"];
-    const data = JSON.stringify(obj);
-    const formData = new FormData();
-    formData.append("file", file as Blob);
-    formData.append("data", data);
-    message.loading("Creating...");
+    // const obj = { ...values };
+    // const file = obj["file"];
+    // delete obj["file"];
+    // const data = JSON.stringify(obj);
+    // const formData = new FormData();
+    // formData.append("file", file as Blob);
+    // formData.append("data", data);
+    // message.loading("Creating...");
+    values.admin.profileImage = "http://localhost200 ";
+    console.log(values);
     try {
-      await addAdminWithFormData(formData);
+      await addAdminWithFormData(values);
       message.success("Admin created successfully!");
     } catch (err: any) {
       console.error(err.message);
@@ -65,7 +63,7 @@ const CreateAdminPage = () => {
       <h1>Create Admin</h1>
 
       <div>
-        <Form submitHandler={onSubmit} resolver={yupResolver(adminSchema)}>
+        <Form submitHandler={onSubmit}>
           <div
             style={{
               border: "1px solid #d9d9d9",
@@ -92,7 +90,7 @@ const CreateAdminPage = () => {
               >
                 <FormInput
                   type="text"
-                  name="admin.name.firstName"
+                  name="admin.firstName"
                   size="large"
                   label="First Name"
                 />
@@ -106,7 +104,7 @@ const CreateAdminPage = () => {
               >
                 <FormInput
                   type="text"
-                  name="admin.name.middleName"
+                  name="admin.middleName"
                   size="large"
                   label="Middle Name"
                 />
@@ -120,7 +118,7 @@ const CreateAdminPage = () => {
               >
                 <FormInput
                   type="text"
-                  name="admin.name.lastName"
+                  name="admin.lastName"
                   size="large"
                   label="Last Name"
                 />
@@ -134,7 +132,7 @@ const CreateAdminPage = () => {
               >
                 <FormInput
                   type="password"
-                  name="password"
+                  name="admin.password"
                   size="large"
                   label="Password"
                 />
@@ -163,7 +161,7 @@ const CreateAdminPage = () => {
               >
                 <FormSelectField
                   size="large"
-                  name="admin.managementDepartment"
+                  name="admin.managementDepartmentId"
                   options={departmentOptions}
                   label="Department"
                   placeholder="Select"
@@ -176,7 +174,7 @@ const CreateAdminPage = () => {
                   marginBottom: "10px",
                 }}
               >
-                <UploadImage name="file" />
+                {/* <UploadImage name="file" /> */}
               </Col>
             </Row>
           </div>
@@ -269,38 +267,13 @@ const CreateAdminPage = () => {
                   placeholder="Select"
                 />
               </Col>
-              <Col
-                className="gutter-row"
-                span={8}
-                style={{
-                  marginBottom: "10px",
-                }}
-              >
-                <FormInput
-                  type="text"
-                  name="admin.designation"
-                  size="large"
-                  label="Designation"
-                />
-              </Col>
-              <Col span={12} style={{ margin: "10px 0" }}>
-                <FormTextArea
-                  name="admin.presentAddress"
-                  label="Present address"
-                  rows={4}
-                />
-              </Col>
-
-              <Col span={12} style={{ margin: "10px 0" }}>
-                <FormTextArea
-                  name="admin.permanentAddress"
-                  label="Permanent address"
-                  rows={4}
-                />
-              </Col>
             </Row>
           </div>
-          <Button htmlType="submit" type="primary">
+          <Button
+            onClick={() => console.log("hi")}
+            htmlType="submit"
+            type="primary"
+          >
             Create
           </Button>
         </Form>

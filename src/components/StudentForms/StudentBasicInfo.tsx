@@ -1,9 +1,8 @@
-import { Col, Row } from "antd";
-import FormInput from "../Forms/FormInput";
-import FormDatePicker from "../Forms/FormDatePicker";
-import FormSelectField from "../Forms/FormSelectField";
-import FormTextArea from "../Forms/FormTextArea";
 import { bloodGroupOptions } from "@/constants/global";
+import { Col, Row } from "antd";
+import FormDatePicker from "../Forms/FormDatePicker";
+import FormInput from "../Forms/FormInput";
+import FormSelectField from "../Forms/FormSelectField";
 
 const StudentBasicInfo = () => {
   return (
@@ -23,6 +22,7 @@ const StudentBasicInfo = () => {
             name="student.email"
             label="Email address"
             size="large"
+            required={true}
           />
         </Col>
 
@@ -31,6 +31,7 @@ const StudentBasicInfo = () => {
             name="student.contactNo"
             label="Contact no."
             size="large"
+            required={true}
           />
         </Col>
 
@@ -39,6 +40,7 @@ const StudentBasicInfo = () => {
             name="student.emergencyContactNo"
             label="Emergency contact no."
             size="large"
+            required={true}
           />
         </Col>
 
@@ -56,22 +58,6 @@ const StudentBasicInfo = () => {
             label="Blood group"
             options={bloodGroupOptions}
             size="large"
-          />
-        </Col>
-
-        <Col span={12} style={{ margin: "10px 0" }}>
-          <FormTextArea
-            name="student.presentAddress"
-            label="Present address"
-            rows={4}
-          />
-        </Col>
-
-        <Col span={12} style={{ margin: "10px 0" }}>
-          <FormTextArea
-            name="student.permanentAddress"
-            label="Permanent address"
-            rows={4}
           />
         </Col>
       </Row>

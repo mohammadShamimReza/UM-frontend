@@ -13,7 +13,6 @@ const ACDepartmentField = ({ name, label }: ACDepartmentFieldProps) => {
   });
   const academicDepartments = data?.academicDepartments;
   const acDepartmentOptions = academicDepartments?.map((acDepartment: any) => {
-    console.log(acDepartment?.id);
     return {
       label: acDepartment?.title,
       value: acDepartment?.id,

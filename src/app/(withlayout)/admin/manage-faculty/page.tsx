@@ -6,10 +6,12 @@ import { useFacultiesQuery } from "@/redux/api/facultyApi";
 import { useDebounced } from "@/redux/hooks";
 import { IDepartment } from "@/types";
 import { ReloadOutlined } from "@ant-design/icons";
-import { Button, Input } from "antd";
+import { Button, Input, Select } from "antd";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useState } from "react";
+
+const { Option } = Select;
 
 const FacultyPage = () => {
   const query: Record<string, any> = {};
@@ -19,6 +21,7 @@ const FacultyPage = () => {
   const [sortBy, setSortBy] = useState<string>("");
   const [sortOrder, setSortOrder] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedDepartment, setSelectedDepartment] = useState<string>("");
 
   query["limit"] = size;
   query["page"] = page;
@@ -33,6 +36,11 @@ const FacultyPage = () => {
   if (!!debouncedSearchTerm) {
     query["searchTerm"] = debouncedSearchTerm;
   }
+
+  if (selectedDepartment) {
+    query["searchTerm"] = selectedDepartment;
+  }
+
   const { data, isLoading } = useFacultiesQuery({ ...query });
 
   const faculties = data?.faculties;
@@ -87,14 +95,15 @@ const FacultyPage = () => {
       },
     },
   ];
+
   const onPaginationChange = (page: number, pageSize: number) => {
     console.log("Page:", page, "PageSize:", pageSize);
     setPage(page);
     setSize(pageSize);
   };
+
   const onTableChange = (pagination: any, filter: any, sorter: any) => {
     const { order, field } = sorter;
-    // console.log(order, field);
     setSortBy(field as string);
     setSortOrder(order === "ascend" ? "asc" : "desc");
   };
@@ -103,7 +112,9 @@ const FacultyPage = () => {
     setSortBy("");
     setSortOrder("");
     setSearchTerm("");
+    setSelectedDepartment("");
   };
+
   return (
     <div>
       <UMBreadCrumb
@@ -121,13 +132,33 @@ const FacultyPage = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           style={{
             width: "20%",
+            marginRight: "10px",
           }}
         />
+        <Select
+          size="large"
+          placeholder="Select Department"
+          onChange={(value) => setSelectedDepartment(value)}
+          style={{
+            width: "20%",
+            marginRight: "10px",
+          }}
+          allowClear
+        >
+          <Option value="">select</Option>
+
+          <Option value="EEE">EEE</Option>
+          <Option value="CSE">CSE</Option>
+          <Option value="Human">HUMAN</Option>
+        </Select>
         <div>
           <Link href="/admin/manage-faculty/create">
             <Button type="primary">Create</Button>
           </Link>
-          {(!!sortBy || !!sortOrder || !!searchTerm) && (
+          {(!!sortBy ||
+            !!sortOrder ||
+            !!searchTerm ||
+            !!selectedDepartment) && (
             <Button
               style={{ margin: "0px 5px" }}
               type="primary"

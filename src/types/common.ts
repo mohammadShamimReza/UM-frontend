@@ -75,6 +75,9 @@ export interface IFaculty {
 export interface IStudent {
   id: string;
   name: Name & { id: string };
+  firstName: string;
+  middleName: string;
+  lastName: string;
   dateOfBirth: string;
   gender: string;
   bloodGroup: string;
@@ -89,6 +92,11 @@ export interface IStudent {
   subject: string;
   createdAt: string;
   updatedAt: string;
+  academicSemester: {
+    id: string;
+    title: string;
+    year: string;
+  }
 }
 
 export interface Guardian {

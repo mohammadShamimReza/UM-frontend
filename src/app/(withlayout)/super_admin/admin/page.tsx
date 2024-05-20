@@ -57,7 +57,7 @@ const AdminPage = () => {
       title: "Name",
       dataIndex: "name",
       render: function (data: Record<string, string>) {
-        const fullName = `${admins[0]?.firstName} ${admins[0]?.middleName} ${admins[0]?.lastName}`;
+        const fullName = admins ? `${admins[0]?.firstName} ${admins[0]?.middleName} ${admins[0]?.lastName}` : "";
         return <>{fullName}</>;
       },
     },

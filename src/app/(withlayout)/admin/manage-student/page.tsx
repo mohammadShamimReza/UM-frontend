@@ -1,21 +1,15 @@
 "use client";
 import ActionBar from "@/components/ui/ActionBar";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
-import { Button, Input } from "antd";
-import Link from "next/link";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  ReloadOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
-import { useState } from "react";
-import { useDebounced } from "@/redux/hooks";
 import UMTable from "@/components/ui/UMTable";
-import { IDepartment } from "@/types";
-import dayjs from "dayjs";
-import { useFacultiesQuery } from "@/redux/api/facultyApi";
 import { useStudentsQuery } from "@/redux/api/studentApi";
+import { useDebounced } from "@/redux/hooks";
+import { EyeOutlined, ReloadOutlined } from "@ant-design/icons";
+import { Button, Input } from "antd";
+import Modal from "antd/es/modal/Modal";
+import dayjs from "dayjs";
+import Link from "next/link";
+import { useState } from "react";
 
 const StudentPage = () => {
   const query: Record<string, any> = {};
@@ -43,7 +37,24 @@ const StudentPage = () => {
 
   const students = data?.students;
   const meta = data?.meta;
-  // console.log(students);
+  console.log(students);
+
+  const getStudentData = (id: string) =>
+    students?.find((student) => id === student.id);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   const columns = [
     {
@@ -82,10 +93,30 @@ const StudentPage = () => {
     {
       title: "Action",
       dataIndex: "id",
-      render: function (data: any) {
+      render: function (data: string) {
+        const datas = getStudentData(data);
         return (
           <>
-           
+            <EyeOutlined onClick={showModal} style={{ color: "red" }} />
+            <Modal
+              title="Basic Modal"
+              open={isModalOpen}
+              onOk={handleOk}
+              onCancel={handleCancel}
+            >
+              <p>
+                <span style={{ fontSize: "20px" }}>Name: </span>
+                {datas?.firstName} {datas?.middleName} {datas?.lastName}
+              </p>
+              <p>
+                <span style={{ fontSize: "20px" }}>semester: </span>{" "}
+                {datas?.academicSemester.title}
+              </p>
+              <p>
+                <span style={{ fontSize: "20px" }}> year: </span>{" "}
+                {datas?.academicSemester.year}
+              </p>
+            </Modal>
           </>
         );
       },

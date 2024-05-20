@@ -1,20 +1,15 @@
 "use client";
 import ActionBar from "@/components/ui/ActionBar";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
-import { Button, Input } from "antd";
-import Link from "next/link";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  ReloadOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
-import { useState } from "react";
-import { useDebounced } from "@/redux/hooks";
 import UMTable from "@/components/ui/UMTable";
-import { IDepartment } from "@/types";
-import dayjs from "dayjs";
 import { useFacultiesQuery } from "@/redux/api/facultyApi";
+import { useDebounced } from "@/redux/hooks";
+import { IDepartment } from "@/types";
+import { ReloadOutlined } from "@ant-design/icons";
+import { Button, Input } from "antd";
+import dayjs from "dayjs";
+import Link from "next/link";
+import { useState } from "react";
 
 const FacultyPage = () => {
   const query: Record<string, any> = {};
@@ -42,7 +37,7 @@ const FacultyPage = () => {
 
   const faculties = data?.faculties;
   const meta = data?.meta;
-  console.log(faculties);
+  console.log(faculties, " this is faculties");
 
   const columns = [
     {
@@ -88,13 +83,7 @@ const FacultyPage = () => {
       title: "Action",
       dataIndex: "id",
       render: function (data: any) {
-        return (
-          <>
-            
-            
-            
-          </>
-        );
+        return <></>;
       },
     },
   ];

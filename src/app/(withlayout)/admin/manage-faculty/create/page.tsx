@@ -8,25 +8,32 @@ import FormInput from "@/components/Forms/FormInput";
 import FormSelectField from "@/components/Forms/FormSelectField";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import { bloodGroupOptions, genderOptions } from "@/constants/global";
+import { useAcademicDepartmentsQuery } from "@/redux/api/academic/departmentApi";
 import { useAddFacultyWithFormDataMutation } from "@/redux/api/facultyApi";
 import { Button, Col, Row, message } from "antd";
 
 const CreateFacultyPage = () => {
   const [addFacultyWithFormData] = useAddFacultyWithFormDataMutation();
+  const { data, isLoading } = useAcademicDepartmentsQuery({
+    limit: 100,
+    page: 1,
+  });
+  const academicDepartments = data?.academicDepartments;
 
   const adminOnSubmit = async (values: any) => {
-    // console.log(values);
-    // const obj = { ...values };
-    // const file = obj["file"];
-    // delete obj["file"];
-    // const data = JSON.stringify(obj);
-    // const formData = new FormData();
-    // formData.append("file", file as Blob);
-    // formData.append("data", data);
-    // message.loading("Creating...");
+    const departname = academicDepartments?.filter((academicDepartment) => {
+      console.log(academicDepartment);
+
+      return academicDepartment.id === values.faculty.academicDepartmentId;
+    });
+    console.log(departname);
+
+    values.faculty.academicDepartmentName = departname?.[0].title;
+    console.log(values);
+    values.faculty.facultyId = "004";
     values.faculty.profileImage = "http://localhost:800";
     try {
-      const res = await addFacultyWithFormData(values);
+      const res = await addFacultyWithFormData(values.faculty);
       if (!!res) {
         message.success("Faculty created successfully!");
       }

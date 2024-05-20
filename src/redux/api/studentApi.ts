@@ -33,7 +33,7 @@ export const studentApi = baseApi.injectEndpoints({
     // create a new student
     addStudentWithFormData: build.mutation({
       query: (data) => ({
-        url: "/users/create-student",
+        url: `${STUDENT_URL}`,
         method: "POST",
         data,
         contentType: "application/json",

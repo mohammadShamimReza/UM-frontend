@@ -34,7 +34,7 @@ export const facultyApi = baseApi.injectEndpoints({
     // create faculty user endpoint
     addFacultyWithFormData: build.mutation({
       query: (data) => ({
-        url: "/users/create-faculty",
+        url: "/faculties",
         method: "POST",
         data,
         contentType: "application/json",

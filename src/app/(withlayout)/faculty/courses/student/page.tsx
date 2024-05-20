@@ -1,16 +1,24 @@
 "use client";
-import ActionBar from "@/components/ui/ActionBar";
-import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
+import { FC, useState } from "react";
 import { Button, Input } from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
-import { useState } from "react";
 import { useDebounced } from "@/redux/hooks";
-import UMTable from "@/components/ui/UMTable";
 import { useFacultyCourseStudentsQuery } from "@/redux/api/facultyApi";
 import Link from "next/link";
+import ActionBar from "@/components/ui/ActionBar";
+import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
+import UMTable from "@/components/ui/UMTable";
 
-const FacultyCoursesStudentsPage = ({ searchParams }: Record<string, any>) => {
-  //   console.log(searchParams);
+interface FacultyCoursesStudentsPageProps {
+  searchParams: {
+    courseId?: string;
+    offeredCourseSectionId?: string;
+  };
+}
+
+const FacultyCoursesStudentsPage: FC<FacultyCoursesStudentsPageProps> = ({
+  searchParams,
+}) => {
   const { courseId, offeredCourseSectionId } = searchParams;
 
   const query: Record<string, any> = {};
@@ -26,10 +34,10 @@ const FacultyCoursesStudentsPage = ({ searchParams }: Record<string, any>) => {
   query["sortBy"] = sortBy;
   query["sortOrder"] = sortOrder;
 
-  if (!!courseId) {
+  if (courseId) {
     query["courseId"] = courseId;
   }
-  if (!!offeredCourseSectionId) {
+  if (offeredCourseSectionId) {
     query["offeredCourseSectionId"] = offeredCourseSectionId;
   }
 
@@ -38,7 +46,7 @@ const FacultyCoursesStudentsPage = ({ searchParams }: Record<string, any>) => {
     delay: 600,
   });
 
-  if (!!debouncedSearchTerm) {
+  if (debouncedSearchTerm) {
     query["searchTerm"] = debouncedSearchTerm;
   }
   const { data, isLoading } = useFacultyCourseStudentsQuery({ ...query });
@@ -46,20 +54,14 @@ const FacultyCoursesStudentsPage = ({ searchParams }: Record<string, any>) => {
   const myCourseStudents = data?.myCourseStudents;
   const meta = data?.meta;
 
-  //   console.log(myCourseStudents);
-
   const columns = [
     {
       title: "Student Name",
-      render: function (data: any) {
-        return (
-          <>
-            {data?.firstName}
-            {data?.middleName}
-            {data?.LastName}
-          </>
-        );
-      },
+      render: (data: any) => (
+        <>
+          {data?.firstName} {data?.middleName} {data?.lastName}
+        </>
+      ),
     },
     {
       title: "Student ID",
@@ -73,30 +75,27 @@ const FacultyCoursesStudentsPage = ({ searchParams }: Record<string, any>) => {
       title: "Contact No",
       dataIndex: "contactNo",
     },
-
     {
       title: "Action",
-      render: function (data: any) {
-        return (
-          <div key="1" style={{ margin: "20px 0px" }}>
-            <Link
-              href={`/faculty/student-result?studentId=${data.id}&courseId=${courseId}&offeredCourseSectionId=${offeredCourseSectionId}`}
-            >
-              <Button type="primary">View Marks</Button>
-            </Link>
-          </div>
-        );
-      },
+      render: (data: any) => (
+        <div key="1" style={{ margin: "20px 0px" }}>
+          <Link
+            href={`/faculty/student-result?studentId=${data.id}&courseId=${courseId}&offeredCourseSectionId=${offeredCourseSectionId}`}
+          >
+            <Button type="primary">View Marks</Button>
+          </Link>
+        </div>
+      ),
     },
   ];
+
   const onPaginationChange = (page: number, pageSize: number) => {
-    console.log("Page:", page, "PageSize:", pageSize);
     setPage(page);
     setSize(pageSize);
   };
+
   const onTableChange = (pagination: any, filter: any, sorter: any) => {
     const { order, field } = sorter;
-    // console.log(order, field);
     setSortBy(field as string);
     setSortOrder(order === "ascend" ? "asc" : "desc");
   };
@@ -106,18 +105,13 @@ const FacultyCoursesStudentsPage = ({ searchParams }: Record<string, any>) => {
     setSortOrder("");
     setSearchTerm("");
   };
+
   return (
     <div>
       <UMBreadCrumb
         items={[
-          {
-            label: "faculty",
-            link: "/faculty",
-          },
-          {
-            label: "courses",
-            link: "/faculty/courses",
-          },
+          { label: "faculty", link: "/faculty" },
+          { label: "courses", link: "/faculty/courses" },
         ]}
       />
       <ActionBar title="My Course Students">
@@ -125,9 +119,7 @@ const FacultyCoursesStudentsPage = ({ searchParams }: Record<string, any>) => {
           size="large"
           placeholder="Search"
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{
-            width: "20%",
-          }}
+          style={{ width: "20%" }}
         />
         <div>
           {(!!sortBy || !!sortOrder || !!searchTerm) && (

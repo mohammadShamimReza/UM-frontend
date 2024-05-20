@@ -35,10 +35,11 @@ const CreateStudentPage = () => {
     // formData.append("file", file as Blob);
     // formData.append("data", data);
     // message.loading("Creating...");
-    console.log(values);
+    console.log(values.student);
     values.student.profileImage = "http://localhost:800";
+    values.student.studentId = "0001";
     try {
-      const res = await addStudentWithFormData(values);
+      const res = await addStudentWithFormData(values.student);
       if (!!res) {
         message.success("Student created successfully!");
       }

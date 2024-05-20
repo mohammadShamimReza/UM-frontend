@@ -1,28 +1,30 @@
 "use client";
 import ActionBar from "@/components/ui/ActionBar";
-import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
-import { Button, Input, Tag, message } from "antd";
-import Link from "next/link";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  FilterOutlined,
-  ReloadOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
-import { Fragment, useState } from "react";
-import { useDebounced } from "@/redux/hooks";
-import UMTable from "@/components/ui/UMTable";
-import dayjs from "dayjs";
 import BaseRow from "@/components/ui/BaseRow";
+import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
+import UMTable from "@/components/ui/UMTable";
 import { ExamType } from "@/constants/global";
 import {
   useStudentEnrolledCourseMarksQuery,
   useUpdateFinalMarksMutation,
 } from "@/redux/api/studentEnrollCourseMarkApi";
+import { useDebounced } from "@/redux/hooks";
 import { IStudentEnrolledCourseMark } from "@/types";
+import { ReloadOutlined } from "@ant-design/icons";
+import { Button, Input, Tag, message } from "antd";
+import dayjs from "dayjs";
+import Link from "next/link";
+import { FC, Fragment, useState } from "react";
 
-const StudentResultPage = ({ searchParams }: Record<string, any>) => {
+interface StudentResultPageProps {
+  searchParams: {
+    studentId?: string;
+    courseId?: string;
+    offeredCourseSectionId?: string;
+  };
+}
+
+const StudentResultPage: FC<StudentResultPageProps> = ({ searchParams }) => {
   const [updateFinalMarks] = useUpdateFinalMarksMutation();
   const [academicSemesterId, setAcademicSemesterId] = useState<string>();
 
@@ -46,11 +48,11 @@ const StudentResultPage = ({ searchParams }: Record<string, any>) => {
     delay: 600,
   });
 
-  if (!!debouncedSearchTerm) {
+  if (debouncedSearchTerm) {
     query["searchTerm"] = debouncedSearchTerm;
   }
 
-  if (!!studentId || !!courseId || !!offeredCourseSectionId) {
+  if (studentId || courseId || offeredCourseSectionId) {
     query["studentId"] = studentId;
     query["courseId"] = courseId;
     query["offeredCourseSectionId"] = offeredCourseSectionId;
@@ -61,10 +63,7 @@ const StudentResultPage = ({ searchParams }: Record<string, any>) => {
   const studentEnrolledCourseMarks = data?.studentEnrolledCourseMarks;
   const meta = data?.meta;
 
-  // console.log(studentEnrolledCourseMarks);
-
   const handleUpdateFinalMarks = async (values: any) => {
-    // console.log(values);
     try {
       const res = await updateFinalMarks(values);
       if (res) {
@@ -79,77 +78,64 @@ const StudentResultPage = ({ searchParams }: Record<string, any>) => {
     {
       title: "Student id",
       dataIndex: "student",
-      render: function (data: any) {
-        return (
-          <>
-            <table>
-              <BaseRow title="name">
-                {data?.firstName} {data?.middleName} {data?.lastName}
-              </BaseRow>
-              <BaseRow title="student ID">{data?.studentId}</BaseRow>
-            </table>
-          </>
-        );
-      },
+      render: (data: any) => (
+        <>
+          <table>
+            <BaseRow title="name">
+              {data?.firstName} {data?.middleName} {data?.lastName}
+            </BaseRow>
+            <BaseRow title="student ID">{data?.studentId}</BaseRow>
+          </table>
+        </>
+      ),
     },
     {
       title: "Grade info",
-      render: function (data: any) {
-        return (
-          <table>
-            <BaseRow title="grade">{!data?.grade ? "-" : data?.grade}</BaseRow>
-            <BaseRow title="total marks">{data?.marks}</BaseRow>
-          </table>
-        );
-      },
+      render: (data: any) => (
+        <table>
+          <BaseRow title="grade">{!data?.grade ? "-" : data?.grade}</BaseRow>
+          <BaseRow title="total marks">{data?.marks}</BaseRow>
+        </table>
+      ),
     },
     {
       title: "Exam type",
       dataIndex: "examType",
       sorter: true,
-      render: function (data: any) {
-        return (
-          <Tag color={data === ExamType.MIDTERM ? "magenta" : "blue"}>
-            {data}
-          </Tag>
-        );
-      },
+      render: (data: any) => (
+        <Tag color={data === ExamType.MIDTERM ? "magenta" : "blue"}>{data}</Tag>
+      ),
     },
     {
       title: "Created at",
       dataIndex: "createdAt",
-      render: function (data: any) {
-        return data && dayjs(data).format("MMM D, YYYY hh:mm A");
-      },
+      render: (data: any) => data && dayjs(data).format("MMM D, YYYY hh:mm A"),
       sorter: true,
     },
     {
       title: "Action",
-      render: function (data: any) {
+      render: (data: any) => {
         setAcademicSemesterId(data?.academicSemesterId);
         return (
-          <>
-            <Link
-              href={`/faculty/update-mark?&examType=${data?.examType}&marks=${data?.marks}&academicSemesterId=${data?.academicSemesterId}&studentId=${studentId}&courseId=${courseId}&offeredCourseSectionId=${offeredCourseSectionId}`}
-            >
-              <Button type="primary" style={{ marginLeft: "3px" }}>
-                Update marks
-              </Button>
-            </Link>
-          </>
+          <Link
+            href={`/faculty/update-mark?&examType=${data?.examType}&marks=${data?.marks}&academicSemesterId=${data?.academicSemesterId}&studentId=${studentId}&courseId=${courseId}&offeredCourseSectionId=${offeredCourseSectionId}`}
+          >
+            <Button type="primary" style={{ marginLeft: "3px" }}>
+              Update marks
+            </Button>
+          </Link>
         );
       },
     },
   ];
 
   const onPaginationChange = (page: number, pageSize: number) => {
-    console.log("Page:", page, "PageSize:", pageSize);
     setPage(page);
     setSize(pageSize);
   };
+
   const onTableChange = (pagination: any, filter: any, sorter: any) => {
     const { order, field } = sorter;
-    // console.log(order, field);
     setSortBy(field as string);
     setSortOrder(order === "ascend" ? "asc" : "desc");
   };
@@ -159,22 +145,14 @@ const StudentResultPage = ({ searchParams }: Record<string, any>) => {
     setSortOrder("");
     setSearchTerm("");
   };
+
   return (
     <div>
       <UMBreadCrumb
         items={[
-          {
-            label: "faculty",
-            link: "/faculty",
-          },
-          {
-            label: "courses",
-            link: "/faculty/courses",
-          },
-          {
-            label: "students",
-            link: "/faculty/courses/student",
-          },
+          { label: "faculty", link: "/faculty" },
+          { label: "courses", link: "/faculty/courses" },
+          { label: "students", link: "/faculty/courses/student" },
         ]}
       />
       <ActionBar title="Student Marks">
@@ -182,9 +160,7 @@ const StudentResultPage = ({ searchParams }: Record<string, any>) => {
           size="large"
           placeholder="Search"
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{
-            width: "20%",
-          }}
+          style={{ width: "20%" }}
         />
         <div>
           {(!!sortBy || !!sortOrder || !!searchTerm) && (

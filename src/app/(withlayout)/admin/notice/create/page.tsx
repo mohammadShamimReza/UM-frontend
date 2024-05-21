@@ -1,6 +1,7 @@
 "use client";
 
-import { Button, Form, Input } from "antd";
+import { useAddNoticeMutation } from "@/redux/api/noticeApi";
+import { Button, Form, Input, message } from "antd";
 
 const formItemLayout = {
   labelCol: {
@@ -19,11 +20,22 @@ const tailFormItemLayout = {
 };
 
 const NoticeForm = () => {
+  const [addNotice] = useAddNoticeMutation();
+
   const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
-    console.log("Received values from form: ", values);
-    // Handle form submission logic here (e.g., send data to the server)
+  const onFinish = async (values: any) => {
+    message.loading("Creating.....");
+    try {
+      const res = await addNotice(values).unwrap();
+      console.log(res);
+      if (res?.id) {
+        message.success("Notice added successfully");
+      }
+    } catch (err: any) {
+      console.error(err.message);
+      message.error(err.message);
+    }
   };
 
   return (

@@ -152,6 +152,13 @@ export interface IBuilding {
   deletedAt?: null;
 }
 
+export interface INotice {
+  title: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface IRoom {
   id: string;
   roomNumber: string;

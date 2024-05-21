@@ -1,16 +1,9 @@
 "use client";
 
+import { useNoticesQuery } from "@/redux/api/noticeApi";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Row } from "antd";
 import React from "react";
-
-const notices = [
-  { id: 1, title: "Notice 1", description: "This is the first notice." },
-  { id: 2, title: "Notice 2", description: "This is the second notice." },
-  { id: 3, title: "Notice 3", description: "This is the third notice." },
-  { id: 4, title: "Notice 4", description: "This is the fourth notice." },
-  { id: 5, title: "Notice 5", description: "This is the fifth notice." },
-];
 
 const cardStyle: React.CSSProperties = {
   width: "100%",
@@ -20,6 +13,10 @@ const cardStyle: React.CSSProperties = {
 };
 
 const NoticesPage = () => {
+  const { data, isLoading } = useNoticesQuery({});
+  const notice = data?.notice;
+  const meta = data?.meta;
+  console.log(notice, meta);
   return (
     <div style={{ padding: "20px", backgroundColor: "#f0f2f5" }}>
       <div
@@ -39,8 +36,8 @@ const NoticesPage = () => {
         </Button>
       </div>
       <Row gutter={[16, 16]}>
-        {notices.map((notice) => (
-          <Col span={24} key={notice.id}>
+        {notice?.map((notice) => (
+          <Col span={24} key={notice.title}>
             <Card title={notice.title} style={cardStyle} hoverable>
               <p>{notice.description}</p>
             </Card>
